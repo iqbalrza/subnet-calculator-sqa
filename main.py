@@ -36,13 +36,17 @@ def _int_ke_ip(nilai: int) -> str:
     return ".".join(str((nilai >> geser) & 0xFF) for geser in (24, 16, 8, 0))
 
 
+def _mask_dari_prefix(prefix: int) -> int:
+    """Subnet mask 32-bit: `prefix` bit 1 dari kiri, sisanya bit 0."""
+    return (0xFFFFFFFF << (32 - prefix)) & 0xFFFFFFFF
+
+
 def hitung_subnet(ip: str, prefix: int) -> dict:
     ip_int = _ip_ke_int(ip)
     if isinstance(prefix, bool) or not isinstance(prefix, int) or not 0 <= prefix <= 32:
         raise ValueError("Prefix harus bilangan bulat antara 0 sampai 32.")
 
-    # Subnet mask: `prefix` bit 1 dari kiri, sisanya bit 0.
-    mask = (0xFFFFFFFF << (32 - prefix)) & 0xFFFFFFFF
+    mask = _mask_dari_prefix(prefix)
     # Network address = IP AND subnet mask.
     network = ip_int & mask
     # Broadcast = network dengan seluruh bit host diubah menjadi 1.
@@ -95,8 +99,57 @@ def api_subnet(ip: str, prefix: int):
         return JSONResponse(status_code=400, content={"detail": str(e)})
 
 
+# Prefix pada notasi CIDR: 0-32 tanpa nol di depan, hanya digit ASCII.
+_POLA_PREFIX = re.compile(r"0|[1-9][0-9]?")
+
+
 def alokasi_vlsm(network_cidr: str, kebutuhan_host: list[int]) -> list[dict]:
-    raise NotImplementedError
+    # 1. Validasi jaringan induk: format "a.b.c.d/p" dan harus alamat network.
+    if not isinstance(network_cidr, str) or network_cidr.count("/") != 1:
+        raise ValueError("Network induk harus berformat CIDR, contoh: 192.168.1.0/24.")
+    ip_str, prefix_str = network_cidr.split("/")
+    if not _POLA_PREFIX.fullmatch(prefix_str) or int(prefix_str) > 32:
+        raise ValueError("Prefix network induk harus bilangan bulat antara 0 sampai 32.")
+    prefix_induk = int(prefix_str)
+    awal = _ip_ke_int(ip_str)
+    network_induk = awal & _mask_dari_prefix(prefix_induk)
+    if awal != network_induk:
+        raise ValueError(
+            f"{ip_str} bukan alamat network untuk /{prefix_induk}; "
+            f"gunakan {_int_ke_ip(network_induk)}/{prefix_induk}."
+        )
+
+    # 2. Validasi daftar kebutuhan host.
+    if not isinstance(kebutuhan_host, list) or not kebutuhan_host:
+        raise ValueError("Daftar kebutuhan host tidak boleh kosong.")
+    for kebutuhan in kebutuhan_host:
+        if isinstance(kebutuhan, bool) or not isinstance(kebutuhan, int) or kebutuhan < 1:
+            raise ValueError("Setiap kebutuhan host harus bilangan bulat >= 1.")
+
+    # 3. Alokasi: kebutuhan terbesar dulu, blok ditempatkan berurutan dari alamat network.
+    kapasitas = 2 ** (32 - prefix_induk)
+    terpakai = 0
+    hasil = []
+    for kebutuhan in sorted(kebutuhan_host, reverse=True):
+        # Ukuran blok = pangkat 2 terkecil >= kebutuhan + 2 (minimal 4 alamat = /30).
+        ukuran = 1 << (kebutuhan + 1).bit_length()
+        if terpakai + ukuran > kapasitas:
+            raise ValueError(
+                f"Kapasitas {network_cidr} ({kapasitas} alamat) tidak cukup: "
+                f"blok untuk {kebutuhan} host ({ukuran} alamat) tidak muat "
+                f"setelah {terpakai} alamat terpakai."
+            )
+        prefix_blok = 32 - (ukuran.bit_length() - 1)
+        network = _int_ke_ip(awal + terpakai)
+        hasil.append(
+            {
+                "kebutuhan": kebutuhan,
+                "network_cidr": f"{network}/{prefix_blok}",
+                **hitung_subnet(network, prefix_blok),
+            }
+        )
+        terpakai += ukuran
+    return hasil
 
 
 class PermintaanVlsm(BaseModel):
@@ -106,4 +159,7 @@ class PermintaanVlsm(BaseModel):
 
 @app.post("/api/vlsm")
 def api_vlsm(permintaan: PermintaanVlsm):
-    raise NotImplementedError
+    try:
+        return alokasi_vlsm(permintaan.network, permintaan.kebutuhan_host)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"detail": str(e)})
