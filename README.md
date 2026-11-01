@@ -27,3 +27,15 @@ Hentikan dan hapus container setelah selesai:
 ```bash
 docker rm -f subnet-app
 ```
+
+## Deploy
+
+Aplikasi berjalan di Vercel: https://subnet-calculator-sqa.vercel.app/
+
+Uji asap ke URL produksi (harus menampilkan empat baris `[LULUS]`):
+
+```bash
+uv run python scripts/smoke_test.py https://subnet-calculator-sqa.vercel.app
+```
+
+Vercel men-deploy ulang otomatis setiap ada perubahan di `main`. Vercel menjalankan aplikasi sebagai function, bukan memakai `Dockerfile`; image Docker tetap diuji di CI.
