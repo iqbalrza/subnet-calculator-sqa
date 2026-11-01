@@ -1,6 +1,7 @@
-def main():
-    print("Hello from subnet-calculator-sqa!")
+﻿from fastapi import FastAPI
+
+app = FastAPI()
 
 
-if __name__ == "__main__":
-    main()
+def hitung_subnet(ip: str, prefix: int) -> dict:
+    raise NotImplementedError
