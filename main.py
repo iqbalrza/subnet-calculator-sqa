@@ -4,6 +4,7 @@ from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
+from pydantic import BaseModel, StrictInt
 
 app = FastAPI()
 
@@ -92,3 +93,17 @@ def api_subnet(ip: str, prefix: int):
         return hitung_subnet(ip, prefix)
     except ValueError as e:
         return JSONResponse(status_code=400, content={"detail": str(e)})
+
+
+def alokasi_vlsm(network_cidr: str, kebutuhan_host: list[int]) -> list[dict]:
+    raise NotImplementedError
+
+
+class PermintaanVlsm(BaseModel):
+    network: str
+    kebutuhan_host: list[StrictInt]
+
+
+@app.post("/api/vlsm")
+def api_vlsm(permintaan: PermintaanVlsm):
+    raise NotImplementedError
