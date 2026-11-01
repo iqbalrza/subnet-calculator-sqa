@@ -235,9 +235,9 @@
 </label>
 <div class="relative">
 <span class="absolute left-3 top-2.5 text-secondary font-code-md text-code-md">NET:</span>
-<input class="w-full h-11 pl-14 pr-3 rounded-lg bg-surface-container-lowest font-code-md text-code-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="vlsm-major-net" placeholder="10.0.0.0/24" type="text" value="172.16.0.0/20"/>
+<input class="w-full h-11 pl-14 pr-3 rounded-lg bg-surface-container-lowest font-code-md text-code-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="vlsm-major-net" placeholder="10.0.0.0/24" type="text" value="192.168.1.0/24"/>
 </div>
-<span class="font-body-sm text-body-sm text-secondary">Provides 4,094 total raw usable addresses for delegation.</span>
+<span class="font-body-sm text-body-sm text-secondary">Harus alamat network, contoh: 192.168.1.0/24 (bukan 192.168.1.5/24).</span>
 </div>
 <div class="md:col-span-6 flex items-end gap-space-xs h-full pt-1 md:pt-6">
 <button class="h-11 px-space-lg rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg transition-colors shadow-sm flex items-center justify-center gap-space-xs font-semibold" onclick="runVLSMAllocation()" type="button">
@@ -262,7 +262,7 @@
 </div>
 <div class="w-36">
 <div class="relative">
-<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="120"/>
+<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="100"/>
 <span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
 </div>
 </div>
@@ -294,7 +294,7 @@
 </div>
 <div class="w-36">
 <div class="relative">
-<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="25"/>
+<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="20"/>
 <span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
 </div>
 </div>
@@ -321,12 +321,12 @@
 </div>
 </div>
 </div>
-<!-- Allocation Overflow Error Demo Banner -->
-<div class="hidden p-space-md rounded-xl bg-error-container text-on-error-container shadow-sm flex items-start gap-space-md" id="vlsm-error-banner">
+<!-- VLSM Error Banner -->
+<div class="hidden p-space-md rounded-xl bg-error-container text-on-error-container shadow-sm flex items-start gap-space-md" id="vlsm-error-banner" role="alert">
 <span class="material-symbols-outlined text-error text-[24px]">crisis_alert</span>
 <div class="flex flex-col gap-0.5">
-<span class="font-headline-sm text-headline-sm font-semibold text-error">Allocation Overflow Error</span>
-<p class="font-body-md text-body-md text-on-surface">Total required host capacity (197 hosts) exceeds available capacity of major network prefix <span class="font-code-md text-code-md text-error font-medium">192.168.1.0/28</span> (14 usable hosts maximum). Expand prefix size to /24 or larger.</p>
+<span class="font-headline-sm text-headline-sm font-semibold text-error">VLSM Tidak Dapat Dialokasikan</span>
+<p class="font-body-md text-body-md text-on-surface" id="vlsm-error-detail"></p>
 </div>
 </div>
 <!-- VLSM Results Table Container -->
@@ -339,7 +339,7 @@
 <!-- Efficiency Indicator -->
 <span class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-medium">
 <span class="material-symbols-outlined text-[16px]">check_circle</span>
-          Space Utilized: 41.2% • Available Pool: 172.16.1.0/24+
+          <span id="vlsm-utilization"></span>
         </span>
 </div>
 <!-- Data Table Responsive Wrapper -->
@@ -357,68 +357,7 @@
 <th class="py-3 px-4">Broadcast</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-surface-container-high font-body-md text-body-md text-on-surface">
-<!-- Row 1: 120 hosts -> /25 -->
-<tr class="hover:bg-primary-fixed/30 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">
-                Subnet A (Computer Lab 1)
-              </td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">120</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">126</td>
-<td class="py-3 px-4">
-<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/25</span>
-</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.128</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.0</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.1 – .126</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.127</td>
-</tr>
-<!-- Row 2: 50 hosts -> /26 -->
-<tr class="hover:bg-primary-fixed/30 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">
-                Subnet B (Faculty Wi-Fi)
-              </td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">50</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">62</td>
-<td class="py-3 px-4">
-<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/26</span>
-</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.192</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.128</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.129 – .190</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.191</td>
-</tr>
-<!-- Row 3: 25 hosts -> /27 -->
-<tr class="hover:bg-primary-fixed/30 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">
-                Subnet C (Admin Offices)
-              </td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">25</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">30</td>
-<td class="py-3 px-4">
-<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/27</span>
-</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.224</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.192</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.193 – .222</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.223</td>
-</tr>
-<!-- Row 4: 2 hosts -> /30 -->
-<tr class="hover:bg-primary-fixed/30 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">
-                Subnet D (Router P2P Link)
-              </td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">2</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">2</td>
-<td class="py-3 px-4">
-<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/30</span>
-</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.252</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.224</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.225 – .226</td>
-<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.227</td>
-</tr>
-</tbody>
+<tbody class="divide-y divide-surface-container-high font-body-md text-body-md text-on-surface" id="vlsm-tbody"></tbody>
 </table>
 </div>
 </div>
@@ -600,17 +539,80 @@
     calculateSubnetAction();
   }
 
-  // ==================== TAB VLSM (masih tampilan contoh; dihubungkan di Tahap 8) ====================
+  // ==================== TAB VLSM (terhubung ke POST /api/vlsm) ====================
 
-  function setVlsmDemo(state) {
+  function showVlsmState(state, detail) {
     $('vlsm-results-container').classList.toggle('hidden', state !== 'success');
     $('vlsm-error-banner').classList.toggle('hidden', state !== 'error');
+    if (state === 'error') $('vlsm-error-detail').textContent = detail;
   }
 
-  function runVLSMAllocation() {
-    const netVal = $('vlsm-major-net').value.trim();
-    const gagal = netVal.endsWith('/28') || netVal.endsWith('/29') || netVal.endsWith('/30');
-    setVlsmDemo(gagal ? 'error' : 'success');
+  function makeCell(text, className) {
+    const td = document.createElement('td');
+    td.className = className;
+    td.textContent = text;
+    return td;
+  }
+
+  function renderVlsm(hasil, baris, network) {
+    const tbody = $('vlsm-tbody');
+    tbody.innerHTML = '';
+    let terpakai = 0;
+    hasil.forEach((blok, i) => {
+      const prefix = Number(blok.network_cidr.split('/')[1]);
+      terpakai += Math.pow(2, 32 - prefix);
+      // Hasil API terurut menurun; baris form diurutkan dengan aturan yang sama (urutan stabil).
+      const nama = baris[i] && baris[i].kebutuhan === blok.kebutuhan && baris[i].nama
+        ? baris[i].nama : `Subnet ${i + 1}`;
+      const rentang = blok.first_host === blok.last_host
+        ? blok.first_host : `${blok.first_host} – ${blok.last_host}`;
+
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-primary-fixed/30 transition-colors';
+      tr.appendChild(makeCell(nama, 'py-3 px-4 font-semibold text-on-surface'));
+      tr.appendChild(makeCell(String(blok.kebutuhan), 'py-3 px-4 font-code-sm text-code-sm text-secondary'));
+      tr.appendChild(makeCell(String(blok.usable_hosts), 'py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold'));
+      const cidrCell = makeCell('', 'py-3 px-4');
+      const badge = document.createElement('span');
+      badge.className = 'px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium';
+      badge.textContent = `/${prefix}`;
+      cidrCell.appendChild(badge);
+      tr.appendChild(cidrCell);
+      tr.appendChild(makeCell(blok.mask, 'py-3 px-4 font-code-sm text-code-sm text-secondary'));
+      tr.appendChild(makeCell(blok.network, 'py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium'));
+      tr.appendChild(makeCell(rentang, 'py-3 px-4 font-code-sm text-code-sm text-secondary'));
+      tr.appendChild(makeCell(blok.broadcast === null ? 'None' : blok.broadcast, 'py-3 px-4 font-code-sm text-code-sm text-secondary'));
+      tbody.appendChild(tr);
+    });
+    const kapasitas = Math.pow(2, 32 - Number(network.split('/')[1]));
+    $('vlsm-utilization').textContent =
+      `Space Utilized: ${(terpakai / kapasitas * 100).toFixed(1)}% (${terpakai.toLocaleString('en-US')} of ${kapasitas.toLocaleString('en-US')} addresses)`;
+  }
+
+  async function runVLSMAllocation() {
+    const network = $('vlsm-major-net').value;  // tidak di-trim: validasi di backend
+    const baris = Array.from(document.querySelectorAll('#vlsm-rows-container .vlsm-row')).map((row) => {
+      const [nama, hosts] = row.querySelectorAll('input');
+      return { nama: nama.value.trim(), kebutuhan: hosts.value === '' ? 0 : Number(hosts.value) };
+    });
+    // Urutan yang sama dengan backend (menurun, stabil) agar nama segmen cocok dengan hasil.
+    const urut = baris.slice().sort((a, b) => b.kebutuhan - a.kebutuhan);
+    try {
+      const response = await fetch('/api/vlsm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ network, kebutuhan_host: baris.map((b) => b.kebutuhan) }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        showVlsmState('error', data.detail || 'Terjadi kesalahan.');
+        return;
+      }
+      renderVlsm(data, urut, network);
+      showVlsmState('success');
+    } catch (err) {
+      showVlsmState('error', 'Tidak dapat menghubungi server. Pastikan server berjalan.');
+    }
   }
 
   let rowCounter = 4;
@@ -649,4 +651,5 @@
     if (e.key === 'Enter') calculateSubnetAction();
   });
   calculateSubnetAction();
+  runVLSMAllocation();
 </script></div></main><footer class="w-full bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="max-w-[1280px] mx-auto px-gutter py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col items-center md:items-start gap-space-xs"><div class="flex items-center gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface font-semibold">SubnetEDU</span><span class="text-secondary">•</span><span class="font-body-sm text-body-sm text-secondary">IPv4 Educational Utilities for Vocational Secondary Schools</span></div><span class="font-body-sm text-body-sm text-outline">Aligned with CompTIA Network+ &amp; Cisco CCNA Networking Curricula</span></div><div class="flex flex-wrap items-center justify-center gap-space-md"><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs" data-path="rfc-1878-archive" href="#"><span class="material-symbols-outlined text-[16px]">menu_book</span>RFC 1878 Specs</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs" data-path="cidr-reference-guide" href="#"><span class="material-symbols-outlined text-[16px]">table_chart</span>CIDR Cheat Sheet</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs" data-path="binary-chart-primer" href="#"><span class="material-symbols-outlined text-[16px]">data_object</span>Binary Octet Primer</a></div></div></footer></body></html>
