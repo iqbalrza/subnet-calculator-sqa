@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>SubnetEDU - Educational Subnetting &amp; VLSM Calculator</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Roboto+Flex:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline-variant": "#c1c6d6", "surface-container-highest": "#e3e2e6", "surface-dim": "#dbd9dd", "error": "#ba1a1a", "on-error": "#ffffff", "secondary": "#5b5f64", "on-secondary-fixed": "#181c20", "inverse-on-surface": "#f1f0f4", "surface-container-low": "#f4f3f7", "primary": "#005bbf", "tertiary": "#076d2e", "tertiary-fixed": "#9cf7a7", "surface-container": "#efedf1", "on-primary": "#ffffff", "on-primary-fixed": "#001a41", "on-tertiary-fixed": "#002109", "primary-container": "#1a73e8", "on-primary-container": "#ffffff", "secondary-fixed-dim": "#c3c7cc", "on-surface-variant": "#414754", "outline": "#727785", "primary-fixed-dim": "#adc7ff", "background": "#faf9fd", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#43474c", "surface": "#faf9fd", "secondary-container": "#dde0e6", "surface-container-high": "#e9e7eb", "primary-fixed": "#d8e2ff", "inverse-surface": "#2f3033", "surface-variant": "#e3e2e6", "on-tertiary-container": "#ffffff", "inverse-primary": "#adc7ff", "on-surface": "#1a1b1e", "on-background": "#1a1b1e", "on-secondary-container": "#5f6368", "surface-container-lowest": "#ffffff", "secondary-fixed": "#dfe3e8", "on-error-container": "#93000a", "on-tertiary-fixed-variant": "#005320", "on-secondary": "#ffffff", "surface-tint": "#005bc0", "surface-bright": "#faf9fd", "on-primary-fixed-variant": "#004493", "tertiary-fixed-dim": "#81da8d", "tertiary-container": "#2e8744", "error-container": "#ffdad6" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-sm": "0.5rem", "space-xl": "2rem", "margin": "2rem", "gutter": "1.5rem", "margin-mobile": "1rem", "space-2xl": "3rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "gutter-mobile": "1rem" }, "fontFamily": { "label-lg": [ "Roboto Flex" ], "body-sm": [ "Roboto Flex" ], "headline-sm": [ "Roboto Flex" ], "code-md": [ "JetBrains Mono" ], "body-lg": [ "Roboto Flex" ], "label-md": [ "Roboto Flex" ], "code-sm": [ "JetBrains Mono" ], "headline-lg": [ "Roboto Flex" ], "code-lg": [ "JetBrains Mono" ], "headline-md": [ "Roboto Flex" ], "body-md": [ "Roboto Flex" ], "display-lg-mobile": [ "Roboto Flex" ], "display-lg": [ "Roboto Flex" ] }, "fontSize": { "label-lg": [ "14px", { "lineHeight": "20px", "fontWeight": "500" } ], "body-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ], "headline-sm": [ "16px", { "lineHeight": "24px", "fontWeight": "500" } ], "code-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "body-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-md": [ "12px", { "lineHeight": "16px", "fontWeight": "500" } ], "code-sm": [ "11px", { "lineHeight": "16px", "fontWeight": "400" } ], "headline-lg": [ "24px", { "lineHeight": "32px", "fontWeight": "500" } ], "code-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "500" } ], "headline-md": [ "20px", { "lineHeight": "28px", "fontWeight": "500" } ], "body-md": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "display-lg-mobile": [ "28px", { "lineHeight": "36px", "fontWeight": "600" } ], "display-lg": [ "36px", { "lineHeight": "44px", "fontWeight": "600" } ] } } } };</script></head><body class="bg-background font-body-md text-body-md text-on-surface min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-[1280px] mx-auto px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><img alt="SubnetEDU Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1V-YOvBXFC5YJ_i_CmRXxixjE3PeDBsmpnuGn7ox-Nmo3Gl1BECAOsUNIuolPkXbNNVW6DbQnxXR8vW5wXgPlJqfCQ0E01JUxHwZBNe_7WxzFv7p4YPmP_-EjBWM8YRfmeL5NgOlrsfoCR3-8xsSuY4tD7tot_Q2bp1jpKiluULUVQVaf4VMKgbwjb4X5oHi9_b_hnUbDKOG6LC5hFPCBq1pXjaEuP6OExZsDcew5Be"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-semibold">SubnetEDU</span><span class="bg-primary-fixed text-on-primary-fixed font-label-md text-label-md px-space-xs py-0.5 rounded-full">Networking Lab</span></div><span class="font-body-sm text-body-sm text-secondary">Curriculum &amp; Classroom Tools</span></div></div><nav class="hidden md:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container rounded-lg"><a aria-current="page" class="px-space-md py-space-sm font-label-lg transition-colors bg-primary-container text-on-primary-container rounded-lg" data-path="subnet-calculator" href="#">Subnet Calculator</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="vlsm-allocator" href="#">VLSM Allocator</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="cidr-reference-guide" href="#">CIDR Reference</a></nav></div><div class="flex items-center gap-space-sm"><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" title="Documentation &amp; Classroom Help" type="button"><span class="material-symbols-outlined text-[20px]">help_outline</span><span class="hidden sm:inline font-label-md text-label-md">Lab Guide</span></button><div class="h-6 w-px bg-surface-container-highest hidden sm:block"></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-140px)]"><div class="max-w-[1280px] mx-auto px-gutter py-space-lg"><div class="flex flex-col w-full">
+<!-- Educational Sub-bar & Classroom Controls -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-lg">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md">
+<span class="material-symbols-outlined text-[14px]">school</span>
+          Curriculum Lab Mode
+        </span>
+<span class="text-secondary font-label-md text-label-md">CCNA 200-301 &amp; CompTIA Net+</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">IPv4 Subnet &amp; VLSM Engine</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Interactive addressing, bit-boundary calculation, and variable length subnet mask engine for classroom demonstrations.</p>
+</div>
+<!-- Instructor State Switcher & Controls -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-sm bg-surface-container-low p-space-xs rounded-xl shadow-sm self-start md:self-auto">
+<span class="font-label-md text-label-md text-secondary px-space-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+        Demo State:
+      </span>
+<div class="inline-flex p-0.5 bg-surface-container rounded-lg gap-0.5" id="state-toggle-group">
+<button class="px-space-sm py-1 rounded font-label-md text-label-md transition-all bg-surface shadow-sm text-primary font-medium" id="btn-state-success" onclick="setDemoState('success')" type="button">Success</button>
+<button class="px-space-sm py-1 rounded font-label-md text-label-md transition-all text-secondary hover:text-on-surface" id="btn-state-empty" onclick="setDemoState('empty')" type="button">Empty</button>
+<button class="px-space-sm py-1 rounded font-label-md text-label-md transition-all text-secondary hover:text-on-surface" id="btn-state-error" onclick="setDemoState('error')" type="button">Error Demo</button>
+</div>
+</div>
+</section>
+<!-- Segmented Main Tabs Navigation -->
+<div class="flex items-center justify-between gap-space-md mb-space-lg">
+<div class="inline-flex p-1 bg-surface-container rounded-xl gap-1">
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg font-label-lg text-label-lg transition-all bg-primary-container text-on-primary-container shadow-sm font-semibold" id="tab-btn-subnet" onclick="switchMainTab('subnet')" type="button">
+<span class="material-symbols-outlined text-[18px]">calculate</span>
+        Subnet Calculator
+      </button>
+<button class="flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg font-label-lg text-label-lg transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-medium" id="tab-btn-vlsm" onclick="switchMainTab('vlsm')" type="button">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+        VLSM Allocator
+      </button>
+</div>
+<!-- Quick Classroom Preset Trigger -->
+<div class="hidden lg:flex items-center gap-space-sm">
+<button class="inline-flex items-center gap-space-xs px-space-md py-space-sm rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-md text-label-md transition-colors" onclick="loadSamplePreset()" type="button">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+        Load CCNA Lab Preset
+      </button>
+</div>
+</div>
+<!-- ==================== TAB 1: SUBNET CALCULATOR ==================== -->
+<div class="flex flex-col gap-space-lg" id="panel-subnet">
+<!-- Calculator Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Single Network Parameters</h2>
+<p class="font-body-sm text-body-sm text-secondary">Calculate subnetwork boundary, usable host pool, wildcard, and 32-bit segmentations.</p>
+</div>
+<span class="inline-flex items-center gap-1 text-secondary font-code-sm text-code-sm px-space-sm py-1 bg-surface-container rounded">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+          IPv4 RFC 791 / RFC 4632
+        </span>
+</div>
+<!-- Form Inputs Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-start">
+<!-- IPv4 Address Input -->
+<div class="md:col-span-5 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between" for="input-ip">
+<span>IPv4 Host Address</span>
+<span class="text-secondary font-code-sm text-code-sm">e.g. 192.168.10.75</span>
+</label>
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-secondary font-code-md text-code-md select-none">IP:</span>
+<input class="w-full h-11 pl-10 pr-3 rounded-lg bg-surface-container-lowest font-code-md text-code-md text-on-surface transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="input-ip" placeholder="192.168.1.1" type="text" value="192.168.10.75"/>
+</div>
+<span class="hidden font-body-sm text-body-sm text-error flex items-center gap-1" id="ip-error-msg">
+<span class="material-symbols-outlined text-[14px]">error</span>
+            Invalid IPv4 octet: Octets must be between 0 and 255 (e.g., 192.168.1.1).
+          </span>
+</div>
+<!-- Mask / Prefix Select -->
+<div class="md:col-span-4 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between" for="select-prefix">
+<span>Subnet Mask / Prefix</span>
+<span class="text-secondary font-code-sm text-code-sm">CIDR (0-32)</span>
+</label>
+<div class="relative">
+<select class="w-full h-11 px-3 rounded-lg bg-surface-container-lowest font-code-md text-code-md text-on-surface transition-all focus:outline-none focus:ring-2 focus:ring-primary shadow-sm appearance-none pr-8 cursor-pointer" id="select-prefix">
+<option value="24">/24  (255.255.255.0 - 254 hosts)</option>
+<option value="25">/25  (255.255.255.128 - 126 hosts)</option>
+<option selected="" value="26">/26  (255.255.255.192 - 62 hosts)</option>
+<option value="27">/27  (255.255.255.224 - 30 hosts)</option>
+<option value="28">/28  (255.255.255.240 - 14 hosts)</option>
+<option value="29">/29  (255.255.255.248 - 6 hosts)</option>
+<option value="30">/30  (255.255.255.252 - 2 hosts)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 pointer-events-none text-secondary text-[20px]">arrow_drop_down</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="md:col-span-3 flex items-end gap-space-xs h-full pt-1 md:pt-6">
+<button class="flex-1 h-11 px-space-md rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg transition-colors shadow-sm flex items-center justify-center gap-space-xs font-semibold" onclick="calculateSubnetAction()" type="button">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+            Calculate
+            <span class="text-on-primary/70 font-code-sm text-code-sm hidden lg:inline">↵</span>
+</button>
+<button class="h-11 w-11 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary hover:text-on-surface flex items-center justify-center transition-colors" onclick="resetSubnetAction()" title="Reset to Empty State" type="button">
+<span class="material-symbols-outlined text-[20px]">restart_alt</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Error State Display Callout (Subnet Context) -->
+<div class="hidden p-space-md rounded-xl bg-error-container text-on-error-container shadow-sm flex items-start gap-space-md" id="subnet-error-callout">
+<span class="material-symbols-outlined text-error text-[24px]">report</span>
+<div class="flex flex-col gap-0.5">
+<span class="font-headline-sm text-headline-sm font-semibold text-error">IPv4 Format Parsing Exception</span>
+<p class="font-body-md text-body-md text-on-surface">The octet value entered (<span class="font-code-md text-code-md text-error font-medium">999.300.12.0</span>) exceeds 8-bit unsigned boundaries [0–255]. Binary transformation cannot occur until octet values satisfy standard IPv4 dot-decimal constraints.</p>
+<div class="mt-space-xs flex items-center gap-space-sm">
+<button class="px-space-sm py-1 bg-surface rounded font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors" onclick="setDemoState('success')" type="button">Load Valid Sample</button>
+<span class="font-body-sm text-body-sm text-secondary">Tip: Instruct students to review 8-bit octet values (2^8 = 256 states).</span>
+</div>
+</div>
+</div>
+<!-- Empty State Representation -->
+<div class="hidden bg-surface-container-lowest rounded-2xl p-space-2xl text-center shadow-sm flex flex-col items-center justify-center gap-space-md" id="subnet-empty-container">
+<div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[36px]">hub</span>
+</div>
+<div class="max-w-md flex flex-col gap-space-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">No Subnet Parameters Calculated</h3>
+<p class="font-body-md text-body-md text-secondary">Enter an IPv4 host address and choose a CIDR prefix (/0 to /32) above to inspect network identifiers, broadcast boundaries, and host capacities.</p>
+</div>
+<button class="px-space-lg py-space-sm rounded-lg bg-primary text-on-primary font-label-lg text-label-lg hover:bg-primary-container transition-colors flex items-center gap-space-xs shadow-sm" onclick="loadSamplePreset()" type="button">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+        Load Standard Lab Exercise (192.168.10.75/26)
+      </button>
+</div>
+<!-- Success State Results Block -->
+<div class="flex flex-col gap-space-lg" id="subnet-success-container">
+<!-- 32-Bit Binary Visualizer Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">view_week</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">32-Bit Octet Binary Architecture</h3>
+</div>
+<div class="flex items-center gap-space-md text-body-sm font-body-sm">
+<span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-primary"></span> Network Bits (26)</span>
+<span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-surface-container-highest"></span> Host Bits (6)</span>
+</div>
+</div>
+<!-- Binary Bit Bar Container -->
+<div class="flex flex-col gap-space-xs overflow-x-auto pb-1">
+<div class="flex items-center gap-space-sm min-w-[620px]">
+<!-- Octet 1: 192 (11111111) -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-code-sm text-code-sm text-secondary">Octet 1 (192)</span>
+<div class="grid grid-cols-8 gap-0.5 w-full">
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">Mask: 255</span>
+</div>
+<span class="font-code-lg text-code-lg text-secondary pt-3">.</span>
+<!-- Octet 2: 168 (10101000) -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-code-sm text-code-sm text-secondary">Octet 2 (168)</span>
+<div class="grid grid-cols-8 gap-0.5 w-full">
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">Mask: 255</span>
+</div>
+<span class="font-code-lg text-code-lg text-secondary pt-3">.</span>
+<!-- Octet 3: 10 (00001010) -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-code-sm text-code-sm text-secondary">Octet 3 (10)</span>
+<div class="grid grid-cols-8 gap-0.5 w-full">
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold">0</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">Mask: 255</span>
+</div>
+<span class="font-code-lg text-code-lg text-secondary pt-3">.</span>
+<!-- Octet 4: 75 (01001011) with /26 boundary split -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<span class="font-code-sm text-code-sm text-secondary">Octet 4 (75) - Split</span>
+<div class="grid grid-cols-8 gap-0.5 w-full relative">
+<!-- 2 Network Bits -->
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold" title="Net Bit 25">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-primary text-on-primary rounded-sm font-semibold" title="Net Bit 26">1</span>
+<!-- 6 Host Bits -->
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-surface-container-highest text-on-surface-variant rounded-sm font-semibold" title="Host Bit 27">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-surface-container-highest text-on-surface-variant rounded-sm font-semibold" title="Host Bit 28">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-surface-container-highest text-on-surface-variant rounded-sm font-semibold" title="Host Bit 29">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-surface-container-highest text-on-surface-variant rounded-sm font-semibold" title="Host Bit 30">0</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-surface-container-highest text-on-surface-variant rounded-sm font-semibold" title="Host Bit 31">1</span>
+<span class="h-8 flex items-center justify-center font-code-md text-code-md bg-surface-container-highest text-on-surface-variant rounded-sm font-semibold" title="Host Bit 32">1</span>
+</div>
+<span class="font-code-sm text-code-sm text-tertiary font-medium">Mask: 192 (11000000)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric Output Cards Bento Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Metric 1: Network ID -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-secondary">
+<span class="font-label-md text-label-md">Network Address (ID)</span>
+<span class="material-symbols-outlined text-[18px]">dns</span>
+</div>
+<div class="my-space-xs">
+<div class="font-code-lg text-code-lg text-on-surface font-semibold">192.168.10.64</div>
+<div class="font-code-sm text-code-sm text-secondary">Prefix: /26</div>
+</div>
+<span class="text-body-sm font-body-sm text-primary">First address in subnetwork</span>
+</div>
+<!-- Metric 2: Broadcast -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-secondary">
+<span class="font-label-md text-label-md">Broadcast Address</span>
+<span class="material-symbols-outlined text-[18px]">cell_tower</span>
+</div>
+<div class="my-space-xs">
+<div class="font-code-lg text-code-lg text-on-surface font-semibold">192.168.10.127</div>
+<div class="font-code-sm text-code-sm text-secondary">All host bits set to 1</div>
+</div>
+<span class="text-body-sm font-body-sm text-secondary">Reserved for sub-broadcast</span>
+</div>
+<!-- Metric 3: Usable Range -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-secondary">
+<span class="font-label-md text-label-md">Usable Host Range</span>
+<span class="material-symbols-outlined text-[18px]">devices</span>
+</div>
+<div class="my-space-xs">
+<div class="font-code-md text-code-md text-on-surface font-semibold">192.168.10.65</div>
+<div class="font-code-sm text-code-sm text-secondary">thru 192.168.10.126</div>
+</div>
+<span class="text-body-sm font-body-sm text-tertiary font-medium">Valid client endpoint space</span>
+</div>
+<!-- Metric 4: Capacity & Formula -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-secondary">
+<span class="font-label-md text-label-md">Usable Capacity</span>
+<span class="material-symbols-outlined text-[18px]">functions</span>
+</div>
+<div class="my-space-xs">
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">62 Hosts</div>
+<div class="font-code-sm text-code-sm text-secondary">Total: 64 addresses</div>
+</div>
+<span class="inline-flex items-center gap-1 font-code-sm text-code-sm bg-tertiary-fixed text-on-tertiary-fixed px-1.5 py-0.5 rounded w-max">
+            2^(32-26) - 2 = 62
+          </span>
+</div>
+</div>
+<!-- Secondary Technical Attributes Section -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Addressing Classification &amp; Bitmasks</h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-1">
+<span class="font-label-md text-label-md text-secondary">Subnet Mask (Dotted Quad)</span>
+<span class="font-code-md text-code-md text-on-surface font-semibold">255.255.255.192</span>
+<span class="font-code-sm text-code-sm text-secondary">Binary: 11111111.11111111.11111111.11000000</span>
+</div>
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-1">
+<span class="font-label-md text-label-md text-secondary">Wildcard (Cisco ACL) Mask</span>
+<span class="font-code-md text-code-md text-on-surface font-semibold">0.0.0.63</span>
+<span class="font-code-sm text-code-sm text-secondary">Bitwise Invert: 255.255.255.255 - Mask</span>
+</div>
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col gap-1">
+<span class="font-label-md text-label-md text-secondary">Class &amp; Scope Specification</span>
+<span class="font-body-md text-body-md text-on-surface font-semibold">Class C • RFC 1918 Private</span>
+<span class="font-body-sm text-body-sm text-secondary">Non-routable over Public Internet</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ==================== TAB 2: VLSM ALLOCATOR ==================== -->
+<div class="hidden flex flex-col gap-space-lg" id="panel-vlsm">
+<!-- Major Network Input Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Variable Length Subnet Mask (VLSM) Planner</h2>
+<p class="font-body-sm text-body-sm text-secondary">Divide a parent IPv4 block across departments sorted strictly by descending host requirements to prevent fragmentation.</p>
+</div>
+<span class="inline-flex items-center gap-1 text-primary font-label-md text-label-md px-space-sm py-1 bg-primary-fixed rounded">
+<span class="material-symbols-outlined text-[16px]">shuffle</span>
+          Auto-Sort Descending
+        </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-start">
+<div class="md:col-span-6 flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface-variant flex items-center justify-between" for="vlsm-major-net">
+<span>Parent / Major Network CIDR</span>
+<span class="text-secondary font-code-sm text-code-sm">e.g. 172.16.0.0/20</span>
+</label>
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-secondary font-code-md text-code-md">NET:</span>
+<input class="w-full h-11 pl-14 pr-3 rounded-lg bg-surface-container-lowest font-code-md text-code-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="vlsm-major-net" placeholder="10.0.0.0/24" type="text" value="172.16.0.0/20"/>
+</div>
+<span class="font-body-sm text-body-sm text-secondary">Provides 4,094 total raw usable addresses for delegation.</span>
+</div>
+<div class="md:col-span-6 flex items-end gap-space-xs h-full pt-1 md:pt-6">
+<button class="h-11 px-space-lg rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg transition-colors shadow-sm flex items-center justify-center gap-space-xs font-semibold" onclick="runVLSMAllocation()" type="button">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+            Allocate VLSM
+          </button>
+<button class="h-11 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg transition-colors flex items-center gap-space-xs" onclick="addRequirementRow()" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            Add Subnet
+          </button>
+</div>
+</div>
+<!-- Subnet Requirements Dynamic List -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<span class="font-label-md text-label-md text-secondary">Departmental Host Requirements</span>
+<div class="flex flex-col gap-space-xs" id="vlsm-rows-container">
+<!-- Row 1 -->
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl vlsm-row" data-row-id="1">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-code-sm text-code-sm text-secondary font-semibold">1</div>
+<div class="flex-1 min-w-0">
+<input class="w-full h-9 px-3 rounded-md bg-surface font-body-md text-body-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Subnet Description" type="text" value="Subnet A (Computer Lab 1)"/>
+</div>
+<div class="w-36">
+<div class="relative">
+<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="120"/>
+<span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
+</div>
+</div>
+<button class="w-9 h-9 flex items-center justify-center text-secondary hover:text-error rounded-md hover:bg-surface-container transition-colors" onclick="removeRequirementRow(this)" title="Delete requirement" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl vlsm-row" data-row-id="2">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-code-sm text-code-sm text-secondary font-semibold">2</div>
+<div class="flex-1 min-w-0">
+<input class="w-full h-9 px-3 rounded-md bg-surface font-body-md text-body-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Subnet Description" type="text" value="Subnet B (Faculty Wi-Fi)"/>
+</div>
+<div class="w-36">
+<div class="relative">
+<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="50"/>
+<span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
+</div>
+</div>
+<button class="w-9 h-9 flex items-center justify-center text-secondary hover:text-error rounded-md hover:bg-surface-container transition-colors" onclick="removeRequirementRow(this)" title="Delete requirement" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl vlsm-row" data-row-id="3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-code-sm text-code-sm text-secondary font-semibold">3</div>
+<div class="flex-1 min-w-0">
+<input class="w-full h-9 px-3 rounded-md bg-surface font-body-md text-body-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Subnet Description" type="text" value="Subnet C (Admin Offices)"/>
+</div>
+<div class="w-36">
+<div class="relative">
+<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="25"/>
+<span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
+</div>
+</div>
+<button class="w-9 h-9 flex items-center justify-center text-secondary hover:text-error rounded-md hover:bg-surface-container transition-colors" onclick="removeRequirementRow(this)" title="Delete requirement" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<!-- Row 4 -->
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl vlsm-row" data-row-id="4">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-code-sm text-code-sm text-secondary font-semibold">4</div>
+<div class="flex-1 min-w-0">
+<input class="w-full h-9 px-3 rounded-md bg-surface font-body-md text-body-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Subnet Description" type="text" value="Subnet D (Router P2P Link)"/>
+</div>
+<div class="w-36">
+<div class="relative">
+<input class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts" type="number" value="2"/>
+<span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
+</div>
+</div>
+<button class="w-9 h-9 flex items-center justify-center text-secondary hover:text-error rounded-md hover:bg-surface-container transition-colors" onclick="removeRequirementRow(this)" title="Delete requirement" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Allocation Overflow Error Demo Banner -->
+<div class="hidden p-space-md rounded-xl bg-error-container text-on-error-container shadow-sm flex items-start gap-space-md" id="vlsm-error-banner">
+<span class="material-symbols-outlined text-error text-[24px]">crisis_alert</span>
+<div class="flex flex-col gap-0.5">
+<span class="font-headline-sm text-headline-sm font-semibold text-error">Allocation Overflow Error</span>
+<p class="font-body-md text-body-md text-on-surface">Total required host capacity (197 hosts) exceeds available capacity of major network prefix <span class="font-code-md text-code-md text-error font-medium">192.168.1.0/28</span> (14 usable hosts maximum). Expand prefix size to /24 or larger.</p>
+</div>
+</div>
+<!-- VLSM Results Table Container -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md" id="vlsm-results-container">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px]">table_rows</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Calculated Subnet Allocation Schedule</h3>
+</div>
+<!-- Efficiency Indicator -->
+<span class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-medium">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+          Space Utilized: 41.2% • Available Pool: 172.16.1.0/24+
+        </span>
+</div>
+<!-- Data Table Responsive Wrapper -->
+<div class="overflow-x-auto rounded-xl shadow-xs">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-md text-label-md uppercase tracking-wider">
+<th class="py-3 px-4">Subnet Segment</th>
+<th class="py-3 px-4">Needed</th>
+<th class="py-3 px-4">Allocated</th>
+<th class="py-3 px-4">CIDR</th>
+<th class="py-3 px-4">Subnet Mask</th>
+<th class="py-3 px-4">Network ID</th>
+<th class="py-3 px-4">Usable Range</th>
+<th class="py-3 px-4">Broadcast</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high font-body-md text-body-md text-on-surface">
+<!-- Row 1: 120 hosts -> /25 -->
+<tr class="hover:bg-primary-fixed/30 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">
+                Subnet A (Computer Lab 1)
+              </td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">120</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">126</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/25</span>
+</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.128</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.0</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.1 – .126</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.127</td>
+</tr>
+<!-- Row 2: 50 hosts -> /26 -->
+<tr class="hover:bg-primary-fixed/30 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">
+                Subnet B (Faculty Wi-Fi)
+              </td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">50</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">62</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/26</span>
+</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.192</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.128</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.129 – .190</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.191</td>
+</tr>
+<!-- Row 3: 25 hosts -> /27 -->
+<tr class="hover:bg-primary-fixed/30 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">
+                Subnet C (Admin Offices)
+              </td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">25</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">30</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/27</span>
+</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.224</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.192</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.193 – .222</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.223</td>
+</tr>
+<!-- Row 4: 2 hosts -> /30 -->
+<tr class="hover:bg-primary-fixed/30 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">
+                Subnet D (Router P2P Link)
+              </td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">2</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-tertiary font-semibold">2</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded font-code-sm text-code-sm bg-primary-fixed text-on-primary-fixed font-medium">/30</span>
+</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">255.255.255.252</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-on-surface font-medium">172.16.0.224</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.225 – .226</td>
+<td class="py-3 px-4 font-code-sm text-code-sm text-secondary">172.16.0.227</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Educational Lab Footer Cheat-Sheet Card -->
+<div class="mt-space-xl p-space-lg rounded-2xl bg-surface-container-low shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Classroom Subnetting Tip</span>
+<span class="font-body-sm text-body-sm text-secondary">Remember the powers of 2 for host bits: 2, 4, 8, 16, 32, 64, 128, 256. Always subtract 2 for Network ID and Broadcast.</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center">
+<span class="font-code-sm text-code-sm text-secondary bg-surface px-space-sm py-1 rounded">2^H - 2 ≥ Needed</span>
+</div>
+</div>
+</div>
+<script>
+  let currentDemoState = 'success';
+  let activeTab = 'subnet';
+
+  function switchMainTab(tab) {
+    activeTab = tab;
+    const tabSubnet = document.getElementById('panel-subnet');
+    const tabVlsm = document.getElementById('panel-vlsm');
+    const btnSubnet = document.getElementById('tab-btn-subnet');
+    const btnVlsm = document.getElementById('tab-btn-vlsm');
+
+    if (tab === 'subnet') {
+      tabSubnet.classList.remove('hidden');
+      tabVlsm.classList.add('hidden');
+
+      btnSubnet.className = 'flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg font-label-lg text-label-lg transition-all bg-primary-container text-on-primary-container shadow-sm font-semibold';
+      btnVlsm.className = 'flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg font-label-lg text-label-lg transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-medium';
+    } else {
+      tabSubnet.classList.add('hidden');
+      tabVlsm.classList.remove('hidden');
+
+      btnVlsm.className = 'flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg font-label-lg text-label-lg transition-all bg-primary-container text-on-primary-container shadow-sm font-semibold';
+      btnSubnet.className = 'flex items-center gap-space-xs px-space-lg py-space-sm rounded-lg font-label-lg text-label-lg transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-medium';
+    }
+    applyDemoState(currentDemoState);
+  }
+
+  function setDemoState(state) {
+    currentDemoState = state;
+    ['success', 'empty', 'error'].forEach(s => {
+      const btn = document.getElementById('btn-state-' + s);
+      if (btn) {
+        if (s === state) {
+          btn.className = 'px-space-sm py-1 rounded font-label-md text-label-md transition-all bg-surface shadow-sm text-primary font-medium';
+        } else {
+          btn.className = 'px-space-sm py-1 rounded font-label-md text-label-md transition-all text-secondary hover:text-on-surface';
+        }
+      }
+    });
+    applyDemoState(state);
+  }
+
+  function applyDemoState(state) {
+    const successBlock = document.getElementById('subnet-success-container');
+    const emptyBlock = document.getElementById('subnet-empty-container');
+    const errorCallout = document.getElementById('subnet-error-callout');
+    const ipInput = document.getElementById('input-ip');
+    const ipErrorMsg = document.getElementById('ip-error-msg');
+
+    const vlsmResults = document.getElementById('vlsm-results-container');
+    const vlsmError = document.getElementById('vlsm-error-banner');
+    const vlsmNet = document.getElementById('vlsm-major-net');
+
+    if (state === 'success') {
+      // Subnet tab
+      successBlock.classList.remove('hidden');
+      emptyBlock.classList.add('hidden');
+      errorCallout.classList.add('hidden');
+      ipErrorMsg.classList.add('hidden');
+      ipInput.classList.remove('ring-2', 'ring-error', 'bg-error-container/20');
+      ipInput.value = '192.168.10.75';
+
+      // VLSM tab
+      vlsmResults.classList.remove('hidden');
+      vlsmError.classList.add('hidden');
+      vlsmNet.value = '172.16.0.0/20';
+    } else if (state === 'empty') {
+      // Subnet tab
+      successBlock.classList.add('hidden');
+      emptyBlock.classList.remove('hidden');
+      errorCallout.classList.add('hidden');
+      ipErrorMsg.classList.add('hidden');
+      ipInput.classList.remove('ring-2', 'ring-error', 'bg-error-container/20');
+      ipInput.value = '';
+
+      // VLSM tab
+      vlsmResults.classList.add('hidden');
+      vlsmError.classList.add('hidden');
+      vlsmNet.value = '';
+    } else if (state === 'error') {
+      // Subnet tab
+      successBlock.classList.add('hidden');
+      emptyBlock.classList.add('hidden');
+      errorCallout.classList.remove('hidden');
+      ipErrorMsg.classList.remove('hidden');
+      ipInput.classList.add('ring-2', 'ring-error', 'bg-error-container/20');
+      ipInput.value = '999.300.12.0';
+
+      // VLSM tab
+      vlsmResults.classList.add('hidden');
+      vlsmError.classList.remove('hidden');
+      vlsmNet.value = '192.168.1.0/28';
+    }
+  }
+
+  function calculateSubnetAction() {
+    const val = document.getElementById('input-ip').value.trim();
+    if (!val || val.includes('999') || val.includes('300')) {
+      setDemoState('error');
+    } else {
+      setDemoState('success');
+    }
+  }
+
+  function resetSubnetAction() {
+    setDemoState('empty');
+  }
+
+  function loadSamplePreset() {
+    setDemoState('success');
+  }
+
+  function runVLSMAllocation() {
+    const netVal = document.getElementById('vlsm-major-net').value.trim();
+    if (netVal.endsWith('/28') || netVal.endsWith('/29') || netVal.endsWith('/30')) {
+      setDemoState('error');
+    } else {
+      setDemoState('success');
+    }
+  }
+
+  let rowCounter = 4;
+  function addRequirementRow() {
+    rowCounter++;
+    const container = document.getElementById('vlsm-rows-container');
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl vlsm-row';
+    div.dataset.rowId = rowCounter;
+    div.innerHTML = `
+      <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center font-code-sm text-code-sm text-secondary font-semibold">${rowCounter}</div>
+      <div class="flex-1 min-w-0">
+        <input type="text" value="Subnet ${String.fromCharCode(64 + rowCounter)} (New Segment)" class="w-full h-9 px-3 rounded-md bg-surface font-body-md text-body-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Subnet Description">
+      </div>
+      <div class="w-36">
+        <div class="relative">
+          <input type="number" value="14" class="w-full h-9 pl-3 pr-10 rounded-md bg-surface font-code-md text-code-md text-on-surface shadow-xs focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Hosts">
+          <span class="absolute right-2 top-2 text-secondary font-body-sm text-body-sm">hosts</span>
+        </div>
+      </div>
+      <button type="button" onclick="removeRequirementRow(this)" title="Delete requirement" class="w-9 h-9 flex items-center justify-center text-secondary hover:text-error rounded-md hover:bg-surface-container transition-colors">
+        <span class="material-symbols-outlined text-[18px]">delete</span>
+      </button>
+    `;
+    container.appendChild(div);
+  }
+
+  function removeRequirementRow(button) {
+    const row = button.closest('.vlsm-row');
+    if (row) {
+      row.remove();
+    }
+  }
+
+  // Keyboard shortcut support
+  document.getElementById('input-ip')?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      calculateSubnetAction();
+    }
+  });
+</script></div></main><footer class="w-full bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="max-w-[1280px] mx-auto px-gutter py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col items-center md:items-start gap-space-xs"><div class="flex items-center gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface font-semibold">SubnetEDU</span><span class="text-secondary">•</span><span class="font-body-sm text-body-sm text-secondary">IPv4 Educational Utilities for Vocational Secondary Schools</span></div><span class="font-body-sm text-body-sm text-outline">Aligned with CompTIA Network+ &amp; Cisco CCNA Networking Curricula</span></div><div class="flex flex-wrap items-center justify-center gap-space-md"><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs" data-path="rfc-1878-archive" href="#"><span class="material-symbols-outlined text-[16px]">menu_book</span>RFC 1878 Specs</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs" data-path="cidr-reference-guide" href="#"><span class="material-symbols-outlined text-[16px]">table_chart</span>CIDR Cheat Sheet</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-space-xs" data-path="binary-chart-primer" href="#"><span class="material-symbols-outlined text-[16px]">data_object</span>Binary Octet Primer</a></div></div></footer></body></html>
